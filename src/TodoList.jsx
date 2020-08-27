@@ -13,11 +13,16 @@ export default class TodoList extends Component {
 
         this.handleAddTodo = this.handleAddTodo.bind(this);
         this.remove = this.remove.bind(this);
+        this.update = this.update.bind(this);
+        this.toggleCompletion = this.toggleCompletion.bind(this);
     }
 
     handleAddTodo(todo) {
         this.setState({
-            todos: [...this.state.todos, { ...todo, id: uuid() }],
+            todos: [
+                ...this.state.todos,
+                { ...todo, id: uuid(), completed: false },
+            ],
         });
     }
 
@@ -25,21 +30,46 @@ export default class TodoList extends Component {
         const todos = this.state.todos.filter((todo) => todo.id !== id);
         this.setState({ todos });
     }
+    update(id, updatedTask) {
+        const updatedTodos = this.state.todos.map((t) => {
+            if (t.id === id) {
+                return { ...t, task: updatedTask };
+            }
+            return t;
+        });
+        this.setState({
+            todos: updatedTodos,
+        });
+    }
+    toggleCompletion(id) {
+        const updatedTodos = this.state.todos.map((t) => {
+            if (t.id === id) {
+                return { ...t, completed: !t.completed };
+            }
+            return t;
+        });
+        this.setState({
+            todos: updatedTodos,
+        });
+    }
 
     render() {
         let todoslists = this.state.todos.map((todo) => (
             <Todo
-                name={todo.todo}
+                task={todo.task}
                 key={todo.id}
                 id={todo.id}
+                completed={todo.completed}
                 delete={this.remove}
+                update={this.update}
+                toggleTodo={this.toggleCompletion}
             />
         ));
         return (
             <div>
                 <h1>Todo List!</h1>
                 <p>A Simple React Todo List App</p>
-                {todoslists}
+                <ul>{todoslists}</ul>
                 <NewTodoForm add={this.handleAddTodo} />
             </div>
         );

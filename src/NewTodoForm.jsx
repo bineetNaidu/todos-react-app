@@ -5,32 +5,32 @@ export default class NewTodoForm extends Component {
         super(props);
 
         this.state = {
-            todo: "",
+            task: "",
         };
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleValueChange(e) {
         this.setState({
-            todo: e.target.value,
+            task: e.target.value,
         });
     }
     handleSubmit(e) {
         e.preventDefault();
         this.props.add(this.state);
-        this.setState({ todo: "" });
+        this.setState({ task: "" });
     }
 
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <label htmlFor="todo">New Todo</label>
+                <label htmlFor="task">New Todo</label>
                 <input
                     type="text"
-                    name="todo"
-                    id="todo"
+                    name="task"
+                    id="task"
                     placeholder="New Todo"
-                    value={this.state.todo}
+                    value={this.state.task}
                     onChange={this.handleValueChange}
                 />
                 <button>Add Todo</button>
